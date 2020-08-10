@@ -6,3 +6,7 @@
   - default
   - low_priority
   - catch_up_emails
+development:
+ :concurrency: <%= ENV['SIDEKIQ_CONCURRENCY'] || 4 %>
+production:
+ :concurrency: <%= ENV['SIDEKIQ_CONCURRENCY'] || 4 %>
