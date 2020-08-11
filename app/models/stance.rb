@@ -90,9 +90,18 @@ class Stance < ApplicationRecord
   end
 
   def update_stance_choices_cache
-    self.stance_choices_cache = stance_choices.map do |sc|
-      {poll_option_id: sc.poll_option_id, poll_option_name: sc.poll_option.name, score: sc.score}
+    self.stance_choices_cache = stance_choices.joins(:poll_option).order('poll_options.priority').map do |sc|
+      {poll_option_id: sc.poll_option_id,
+       poll_option_name: sc.poll_option.name,
+       score: sc.score,
+       rank_or_score: sc.rank_or_score,
+       priority: sc.poll_option.priority}
     end
+  end
+
+  def update_stance_choices_cache!
+    self.update_stance_choices_cache
+    update_columns(stance_choices_cache: self.stance_choices_cache)
   end
 
   def choice=(choice)

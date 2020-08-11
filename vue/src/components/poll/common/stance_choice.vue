@@ -31,6 +31,7 @@ export default
       @poll.pollType
 
     optionName: ->
+      name = @stance.stanceChoicesCache.find((po) -> po.poll_option_id == @pollOptionId)
       if @poll.translateOptionName()
         @$t('poll_' + @pollType + '_options.' + @stanceChoice.pollOption().name)
       else

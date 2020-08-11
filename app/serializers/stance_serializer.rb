@@ -15,11 +15,17 @@ class StanceSerializer < ApplicationSerializer
              :poll_id,
              :participant_id,
              :revoked_at,
-             :my_stance
+             :my_stance,
+             :stance_choices_cache
 
   has_one :poll, serializer: PollSerializer, root: :polls
   has_one :participant, serializer: AuthorSerializer, root: :users
   has_many :stance_choices, serializer: StanceChoiceSerializer, root: :stance_choices
+
+  def stance_choices_cache
+    object.update_stance_choices_cache! if object.stance_choices_cache.empty?
+    object.stance_choices_cache
+  end
 
   def volume
     object[:volume]

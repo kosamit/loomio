@@ -1,7 +1,7 @@
 Sidekiq.default_worker_options = { 'backtrace' => true }
 Sidekiq::Extensions.enable_delay!
 
-if Rails.env.test? || Rails.env.development?
+if Rails.env.test?
   require 'sidekiq/testing'
   Sidekiq::Testing.inline!
 else

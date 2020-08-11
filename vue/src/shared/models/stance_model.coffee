@@ -51,7 +51,7 @@ export default class StanceModel extends BaseModel
     @stanceChoice().pollOption() if @stanceChoice()
 
   pollOptionId: ->
-    (@pollOption() or {}).id
+    (@stanceChoicesCache[0] || {}).poll_option_id
 
   pollOptions: ->
     @recordStore.pollOptions.find(@pollOptionIds())
@@ -61,13 +61,13 @@ export default class StanceModel extends BaseModel
       'asc'
     else
       'desc'
-    compact orderBy @stanceChoices(), 'rankOrScore', order
+    compact orderBy @stanceChoicesCache, 'rankOrScore', order
 
   stanceChoiceNames: ->
-    map(@pollOptions(), 'name')
+    map(@stanceChoicesCache, 'poll_option_name')
 
   pollOptionIds: ->
-    map @stanceChoices(), 'pollOptionId'
+    map(@stanceChoicesCache, 'poll_option_id')
 
   choose: (optionIds) ->
     each @recordStore.stanceChoices.find(stanceId: @id), (stanceChoice) ->
